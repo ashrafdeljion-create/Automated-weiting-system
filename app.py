@@ -13,7 +13,7 @@ from weighting import (
     DIMENSIONS,
     PROVINCES,
     age_value_to_group,
-    fetch_latest_stats_sa_population,
+    load_stats_sa_population as load_stats_sa_benchmarks,
     poststratification_weights,
     stats_sa_targets,
 )
@@ -93,7 +93,7 @@ st.markdown(
 
 @st.cache_data(ttl="1d", max_entries=1)
 def load_stats_sa_population():
-    return fetch_latest_stats_sa_population()
+    return load_stats_sa_benchmarks()
 
 
 def category_label(value):
@@ -461,16 +461,28 @@ display_names = {}
 
 if source == "Latest Stats SA population estimates":
     try:
-        population, benchmark_year, benchmark_url = load_stats_sa_population()
+        (
+            population,
+            benchmark_year,
+            benchmark_url,
+            archive_used,
+        ) = load_stats_sa_population()
     except Exception as exc:
         st.error(f"Could not load current Stats SA benchmarks: {exc}")
         st.info("You can switch to manually entered targets or a target CSV.")
         st.stop()
 
-    st.caption(
-        f"Using the latest publication found ({benchmark_year}). "
-        "The app fetches and caches it for up to 24 hours."
-    )
+    if archive_used:
+        st.warning(
+            f"Stats SA could not be reached. Using the archived official "
+            f"population estimates from {benchmark_year}; these may be older "
+            "than the latest release."
+        )
+    else:
+        st.caption(
+            f"Using the latest publication found ({benchmark_year}). "
+            "The app fetches and caches it for up to 24 hours."
+        )
     st.markdown(
         f"Source: [Stats SA Mid-year population estimates, {benchmark_year}]"
         f"({benchmark_url})"

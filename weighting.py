@@ -1,8 +1,9 @@
 import re
 from datetime import date
 from io import BytesIO
+from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 import pandas as pd
 from pypdf import PdfReader
@@ -38,6 +39,11 @@ _AGE_ROW = re.compile(
     r"^\s*(\d{1,2})\s*(?:[-–—\ufffd]\s*(\d{1,2})|(\+))\s+(.*)$"
 )
 
+STATS_SA_ARCHIVE_YEAR = 2026
+STATS_SA_ARCHIVE_URL = (
+    "https://www.statssa.gov.za/publications/P0302/P03022026.pdf"
+)
+
 
 def fetch_latest_stats_sa_population(current_year=None, timeout=30):
     year = current_year or date.today().year
@@ -49,7 +55,18 @@ def fetch_latest_stats_sa_population(current_year=None, timeout=30):
             f"P0302{candidate_year}.pdf"
         )
         try:
-            with urlopen(url, timeout=timeout) as response:
+            request = Request(
+                url,
+                headers={
+                    "User-Agent": (
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/131.0.0.0 Safari/537.36"
+                    ),
+                    "Referer": "https://www.statssa.gov.za/",
+                },
+            )
+            with urlopen(request, timeout=timeout) as response:
                 pdf_bytes = response.read()
         except HTTPError as exc:
             if exc.code == 404:
@@ -73,6 +90,63 @@ def fetch_latest_stats_sa_population(current_year=None, timeout=30):
 
     detail = "; ".join(errors) if errors else "no recent publication was found"
     raise RuntimeError(f"Could not retrieve Stats SA population estimates: {detail}")
+
+
+def load_stats_sa_population(current_year=None, timeout=30):
+    try:
+        population, year, url = fetch_latest_stats_sa_population(
+            current_year=current_year, timeout=timeout
+        )
+        return population, year, url, False
+    except RuntimeError as live_error:
+        archive_path = (
+            Path(__file__).parent
+            / "data"
+            / f"stats_sa_population_{STATS_SA_ARCHIVE_YEAR}.csv"
+        )
+        if not archive_path.is_file():
+            raise RuntimeError(
+                f"{live_error}; the archived Stats SA benchmark file is missing"
+            ) from live_error
+
+        try:
+            population = pd.read_csv(archive_path)
+        except (OSError, ValueError, pd.errors.ParserError) as exc:
+            raise RuntimeError(
+                f"Could not read the archived Stats SA benchmark file: {exc}"
+            ) from exc
+
+        required_columns = {
+            "year",
+            "geography",
+            "population_group",
+            "age_group",
+            "sex",
+            "population",
+        }
+        if not required_columns.issubset(population.columns):
+            raise ValueError(
+                "The archived Stats SA benchmark file has an invalid schema."
+            )
+        if set(population["year"].dropna().unique()) != {
+            STATS_SA_ARCHIVE_YEAR
+        }:
+            raise ValueError(
+                "The archived Stats SA benchmark file has an unexpected year."
+            )
+        if population.duplicated(
+            ["geography", "population_group", "age_group", "sex"]
+        ).any():
+            raise ValueError(
+                "The archived Stats SA benchmark file contains duplicate rows."
+            )
+
+        return (
+            population,
+            STATS_SA_ARCHIVE_YEAR,
+            STATS_SA_ARCHIVE_URL,
+            True,
+        )
 
 
 def parse_stats_sa_population_pdf(pdf_bytes, year):
