@@ -17,6 +17,7 @@ from weighting import (
     missing_positive_raking_categories,
     poststratification_weights,
     raking_targets_from_target_table,
+    restrict_raking_targets_to_observed,
     stats_sa_targets,
 )
 
@@ -712,7 +713,39 @@ if weight_column in df.columns:
     st.error("Choose a weight-column name that does not already exist.")
     configured = False
 
-if configured and st.button("Calculate weights", type="primary"):
+missing_categories = (
+    missing_positive_raking_categories(weight_data, targets)
+    if configured and method == "Raking"
+    else {}
+)
+use_observed_categories = False
+if missing_categories:
+    missing_details = "; ".join(
+        f"{display_names.get(column, column)}: {', '.join(categories)}"
+        for column, categories in missing_categories.items()
+    )
+    st.warning(
+        "Some positive target categories have no respondents: "
+        f"{missing_details}. You can calculate using only categories present "
+        "in the sample, but the result will represent that restricted group "
+        "rather than the full benchmark population."
+    )
+    use_observed_categories = st.checkbox(
+        "Use only categories present in my data and rescale their targets",
+        key="use_observed_raking_categories",
+        help=(
+            "Enable only when the absent categories are outside the survey's "
+            "intended population, not simply missing from the sample."
+        ),
+    )
+
+if configured and st.button(
+    "Calculate weights",
+    type="primary",
+    disabled=bool(missing_categories) and not use_observed_categories,
+):
+    effective_raking_targets = None
+    excluded_categories = {}
     try:
         with st.spinner("Calculating and checking weights..."):
             if method == "Raking":
@@ -722,29 +755,17 @@ if configured and st.button("Calculate weights", type="primary"):
                         "Raking target distributions are missing for: "
                         + ", ".join(sorted(missing_targets))
                     )
-                missing_categories = missing_positive_raking_categories(
-                    weight_data, targets
-                )
+                effective_raking_targets = targets
                 if missing_categories:
-                    details = "; ".join(
-                        f"{display_names.get(column, column)}: "
-                        + ", ".join(categories)
-                        for column, categories in missing_categories.items()
+                    if not use_observed_categories:
+                        raise ValueError(
+                            "Enable the option to calculate using only "
+                            "categories present in the sample."
+                        )
+                    effective_raking_targets, excluded_categories = (
+                        restrict_raking_targets_to_observed(weight_data, targets)
                     )
-                    guidance = (
-                        "Check that the survey covers the benchmark population "
-                        "and that category mappings are correct. If age is "
-                        "available as individual numeric values, select that "
-                        "column so the app can group ages into Stats SA's "
-                        "five-year bands. Custom age bands that cross those "
-                        "boundaries cannot be split accurately; use a matching "
-                        "verified benchmark instead of estimating figures."
-                    )
-                    raise ValueError(
-                        "Positive target categories have no respondents "
-                        f"({details}). {guidance}"
-                    )
-                scheme = wp.scheme_from_dict(targets)
+                scheme = wp.scheme_from_dict(effective_raking_targets)
                 weighted_subset = wp.weight_dataframe(
                     weight_data[weight_variables].copy(),
                     scheme,
@@ -778,6 +799,13 @@ if configured and st.button("Calculate weights", type="primary"):
             efficiency = wp.weighting_efficiency(weight_values)
 
         st.success("Weighting completed.")
+        if excluded_categories:
+            st.warning(
+                "Restricted-category weighting was used. Missing target "
+                "categories were excluded and the remaining targets were "
+                "rescaled to 100% within each dimension. These weights do not "
+                "represent the full benchmark population."
+            )
         with st.container(horizontal=True):
             st.metric("Weighting efficiency", f"{efficiency:.1f}%", border=True)
             st.metric(
@@ -809,7 +837,11 @@ if configured and st.button("Calculate weights", type="primary"):
                     * 100
                 ).rename("Weighted sample (%)")
 
-                if target_data is not None:
+                if method == "Raking":
+                    expected = pd.Series(
+                        effective_raking_targets[column]
+                    ).rename("Target (%)")
+                elif target_data is not None:
                     expected = (
                         target_data.groupby(column, observed=True)["target_percent"]
                         .sum()

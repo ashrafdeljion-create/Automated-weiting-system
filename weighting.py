@@ -341,6 +341,46 @@ def missing_positive_raking_categories(data, targets):
     return missing
 
 
+def restrict_raking_targets_to_observed(data, targets):
+    adjusted = {}
+    excluded = {}
+    for column, distribution in targets.items():
+        observed = set(data[column].dropna().unique())
+        unmatched = observed - set(distribution)
+        if unmatched:
+            categories = ", ".join(sorted(map(str, unmatched)))
+            raise ValueError(
+                f"Sample categories for '{column}' are missing from the "
+                f"target distribution: {categories}."
+            )
+
+        supported = {
+            category: float(target_percent)
+            for category, target_percent in distribution.items()
+            if category in observed
+        }
+        total = sum(supported.values())
+        if total <= 0:
+            raise ValueError(
+                f"No positive target remains for observed categories in "
+                f"'{column}'."
+            )
+        adjusted[column] = {
+            category: target_percent / total * 100
+            for category, target_percent in supported.items()
+        }
+
+        missing = [
+            category
+            for category, target_percent in distribution.items()
+            if target_percent > 0 and category not in observed
+        ]
+        if missing:
+            excluded[column] = sorted(missing, key=str)
+
+    return adjusted, excluded
+
+
 def age_value_to_group(value):
     try:
         age = float(value)
