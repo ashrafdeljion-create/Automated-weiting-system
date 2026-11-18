@@ -25,6 +25,71 @@ st.set_page_config(
     layout="wide",
 )
 
+st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background: #eef3f8;
+    }
+    [data-testid="stSidebar"] {
+        background: #f8fafc;
+        border-right: 1px solid #d8e1ec;
+    }
+    [data-testid="stHeader"] {
+        background: #173a69;
+    }
+    .app-header {
+        background: #173a69;
+        color: white;
+        padding: 1rem 1.25rem 0.85rem 1.25rem;
+        margin: -1rem -1rem 1rem -1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #0f2d54;
+    }
+    .app-header h1 {
+        color: white;
+        font-size: 1.45rem;
+        margin: 0;
+        font-weight: 700;
+    }
+    .ready-status {
+        background: #dce6f2;
+        color: #173a69;
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+    [data-testid="stMetric"] {
+        background: #ffffff;
+        border: 1px solid #dbe3ed;
+        border-radius: 8px;
+        padding: 0.65rem;
+    }
+    [data-testid="stDataFrame"] {
+        border: 1px solid #dbe3ed;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .dashboard-card {
+        background: white;
+        border: 1px solid #dbe3ed;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    .dashboard-card h3 {
+        margin-top: 0;
+        color: #1f3554;
+        font-size: 1.05rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 @st.cache_data(ttl="1d", max_entries=1)
 def load_stats_sa_population():
@@ -313,18 +378,21 @@ def read_custom_target_csv(uploaded_csv, method, variables, mapping, data):
     return {}, {}, target
 
 
-st.title("Automated survey weighting")
 st.markdown(
-    "Upload an SPSS `.sav` file and choose a weighting method. Use the latest"
-    " available Stats SA population estimates for supported demographics, or"
-    " provide targets for any other categorical survey question."
+    """
+    <div class="app-header">
+        <h1>Survey Weighting Engine Pro</h1>
+        <span class="ready-status">● System Ready</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
 uploaded_file = st.sidebar.file_uploader(
     "Upload an SPSS .sav file", type=["sav"]
 )
 if uploaded_file is None:
-    st.info("Upload an SPSS `.sav` file to configure weighting.")
+    st.info("Upload an SPSS `.sav` file in Configuration & Inputs to begin.")
     st.stop()
 
 try:
@@ -334,9 +402,11 @@ except Exception as exc:
     st.stop()
 
 file_key = hashlib.sha256(uploaded_file.getvalue()).hexdigest()[:10]
-st.sidebar.success(f"Loaded {len(df):,} rows and {len(df.columns)} columns.")
+st.sidebar.header("Configuration & Inputs")
+st.sidebar.caption("Data Source (.sav)")
+st.sidebar.success(f"{uploaded_file.name}\n\n{len(df):,} rows")
 
-method = st.selectbox(
+method = st.sidebar.selectbox(
     "Weighting method",
     ["Raking", "Post-stratification"],
     help=(
@@ -344,7 +414,7 @@ method = st.selectbox(
         "the joint distribution of the selected categories."
     ),
 )
-source = st.selectbox(
+source = st.sidebar.selectbox(
     "Target source",
     [
         "Latest Stats SA population estimates",
@@ -613,16 +683,18 @@ if configured and st.button("Calculate weights", type="primary"):
             efficiency = wp.weighting_efficiency(weight_values)
 
         st.success("Weighting completed.")
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Weighting efficiency", f"{efficiency:.1f}%")
-        col2.metric(
+        metric1, metric2, metric3, metric4 = st.columns(4)
+        metric1.metric("Weighting efficiency", f"{efficiency:.1f}%")
+        metric2.metric(
             "Effective sample size",
             f"{len(df_weighted) * efficiency / 100:,.0f}",
         )
-        col3.metric("Mean weight", f"{weight_values.mean():.3f}")
-        col4.metric("Maximum weight", f"{weight_values.max():.3f}")
+        metric3.metric("Mean weight", f"{weight_values.mean():.3f}")
+        metric4.metric("Maximum weight", f"{weight_values.max():.3f}")
 
-        st.subheader("Weighted distribution checks")
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("<h3>Demographic Profile & Weighting Report</h3>", unsafe_allow_html=True)
+        report_rows = []
         for column in weight_variables:
             unweighted = (
                 weight_data[column].value_counts(normalize=True) * 100
@@ -647,8 +719,49 @@ if configured and st.button("Calculate weights", type="primary"):
                 [unweighted, expected, weighted], axis=1
             ).round(2)
             label = display_names.get(column, column)
-            st.markdown(f"**{label}**")
-            st.dataframe(comparison, width="stretch")
+            for index, row in comparison.iterrows():
+                unweighted_percent = float(row.get("Unweighted %", 0) or 0)
+                target_percent = float(row.get("Target %", 0) or 0)
+                weighted_percent = float(row.get("Weighted %", 0) or 0)
+                weight_factor = (
+                    target_percent / unweighted_percent
+                    if unweighted_percent > 0
+                    else 0
+                )
+                report_rows.append(
+                    {
+                        "Variable": f"{label} - {category_label(index)}",
+                        "Unweighted Sample (%)": unweighted_percent,
+                        "Stats SA Target (%)": target_percent,
+                        "Applied Weight Factor": round(weight_factor, 2),
+                        "Weighted Sample (%)": weighted_percent,
+                    }
+                )
+        if report_rows:
+            st.dataframe(
+                pd.DataFrame(report_rows).reset_index(drop=True),
+                width="stretch",
+                hide_index=True,
+                column_config={
+                    "Applied Weight Factor": st.column_config.NumberColumn(
+                        format="%.2f"
+                    )
+                },
+            )
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+        st.markdown("<h3>Weighting Process Monitor</h3>", unsafe_allow_html=True)
+        st.progress(
+            min(max(efficiency / 100, 0.0), 1.0),
+            text=f"{method} convergence: completed",
+        )
+        effective_sample_size = len(df_weighted) * efficiency / 100
+        st.progress(
+            min(max(effective_sample_size / len(df_weighted), 0.0), 1.0),
+            text=f"Effective Sample Size (NEFF): {effective_sample_size:,.0f}",
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
 
         out_file = "weighted_data.sav"
         with tempfile.TemporaryDirectory() as temp_dir:
