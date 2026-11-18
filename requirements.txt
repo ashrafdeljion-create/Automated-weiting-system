@@ -2,3 +2,4 @@ streamlit
 pandas
 pyreadstat
 weightipy
+pypdf>=5.0
