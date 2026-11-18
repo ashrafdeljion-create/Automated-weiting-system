@@ -112,6 +112,28 @@ def category_label(value):
     return str(value)
 
 
+def labeled_category_label(variable, value, variable_value_labels):
+    labels = variable_value_labels.get(variable, {})
+    value_label = labels.get(value)
+    if value_label is None:
+        value_label = next(
+            (
+                label
+                for code, label in labels.items()
+                if category_label(code) == category_label(value)
+            ),
+            None,
+        )
+    if value_label is None:
+        return category_label(value)
+
+    label = category_label(value_label)
+    code = category_label(value)
+    if normalized_label(label) == normalized_label(code):
+        return label
+    return f"{label} ({code})"
+
+
 def normalized_label(value):
     return "".join(character for character in category_label(value).lower() if character.isalnum())
 
@@ -239,7 +261,9 @@ def make_sample_columns(data, variables, prefix):
     return working, mapping
 
 
-def make_manual_raking_targets(data, variables, mapping):
+def make_manual_raking_targets(
+    data, variables, mapping, variable_value_labels, column_names_to_labels
+):
     targets = {}
     comparison_targets = {}
     st.caption(
@@ -252,7 +276,8 @@ def make_manual_raking_targets(data, variables, mapping):
         denominator = counts.sum()
         variable_targets = {}
 
-        st.subheader(f"Targets for {variable}")
+        variable_label = column_names_to_labels.get(variable) or variable
+        st.subheader(f"Targets for {variable_label}")
         if len(counts) > 100:
             st.warning(
                 f"'{variable}' has {len(counts)} categories. Group or recode it "
@@ -262,10 +287,13 @@ def make_manual_raking_targets(data, variables, mapping):
 
         for index, (category, count) in enumerate(counts.items()):
             default_percent = float(count / denominator * 100)
+            category_label_text = labeled_category_label(
+                variable, category, variable_value_labels
+            )
             col_a, col_b = st.columns([2, 1])
             with col_a:
                 target_percent = st.number_input(
-                    f"Target % for {category}",
+                    f"Target % for {category_label_text}",
                     min_value=0.0,
                     max_value=100.0,
                     value=default_percent,
@@ -547,7 +575,11 @@ else:
                 "reference source, not from the sample itself."
             )
             targets, comparison_targets = make_manual_raking_targets(
-                weight_data, variables, mapping
+                weight_data,
+                variables,
+                mapping,
+                meta.variable_value_labels,
+                meta.column_names_to_labels,
             )
             configured = bool(targets) and all(
                 abs(sum(values.values()) - 100) <= 0.01
