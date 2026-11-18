@@ -46,13 +46,20 @@ st.markdown(
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
         border-bottom: 1px solid #0f2d54;
     }
     .app-header h1 {
         color: white;
-        font-size: 1.45rem;
+        font-size: 1.15rem;
         margin: 0;
         font-weight: 700;
+    }
+    .header-subtitle {
+        color: #b7cde8;
+        margin: 0.1rem 0 0;
+        font-size: 0.92rem;
     }
     .ready-status {
         background: #dce6f2;
@@ -61,6 +68,8 @@ st.markdown(
         padding: 0.35rem 0.75rem;
         font-size: 0.82rem;
         font-weight: 700;
+        flex-shrink: 0;
+        white-space: nowrap;
     }
     [data-testid="stMetric"] {
         background: #ffffff;
@@ -72,18 +81,6 @@ st.markdown(
         border: 1px solid #dbe3ed;
         border-radius: 8px;
         overflow: hidden;
-    }
-    .dashboard-card {
-        background: white;
-        border: 1px solid #dbe3ed;
-        border-radius: 10px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-    .dashboard-card h3 {
-        margin-top: 0;
-        color: #1f3554;
-        font-size: 1.05rem;
     }
     </style>
     """,
@@ -409,18 +406,21 @@ def read_custom_target_csv(uploaded_csv, method, variables, mapping, data):
 st.markdown(
     """
     <div class="app-header">
-        <h1>Survey Weighting Engine Pro</h1>
+        <div>
+            <h1>Survey Weighting Engine Pro</h1>
+            <p class="header-subtitle">Multi-method calibration suite</p>
+        </div>
         <span class="ready-status">● System Ready</span>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-uploaded_file = st.sidebar.file_uploader(
-    "Upload an SPSS .sav file", type=["sav"]
-)
+st.sidebar.header("Weighting configuration")
+st.sidebar.caption("Data source (.sav)")
+uploaded_file = st.sidebar.file_uploader("Upload an SPSS .sav file", type=["sav"])
 if uploaded_file is None:
-    st.info("Upload an SPSS `.sav` file in Configuration & Inputs to begin.")
+    st.info("Upload an SPSS `.sav` file in Weighting configuration to begin.")
     st.stop()
 
 try:
@@ -430,20 +430,23 @@ except Exception as exc:
     st.stop()
 
 file_key = hashlib.sha256(uploaded_file.getvalue()).hexdigest()[:10]
-st.sidebar.header("Configuration & Inputs")
-st.sidebar.caption("Data Source (.sav)")
 st.sidebar.success(f"{uploaded_file.name}\n\n{len(df):,} rows")
+st.subheader("Calibration dashboard")
 
 method = st.sidebar.selectbox(
     "Weighting method",
     ["Raking", "Post-stratification"],
+    format_func=lambda value: {
+        "Raking": "RIM weighting (Raking)",
+        "Post-stratification": "Joint post-stratification",
+    }[value],
     help=(
         "Raking matches separate target margins. Post-stratification matches "
         "the joint distribution of the selected categories."
     ),
 )
 source = st.sidebar.selectbox(
-    "Target source",
+    "Benchmark / target source",
     [
         "Latest Stats SA population estimates",
         "Enter target percentages",
@@ -466,6 +469,7 @@ if source == "Latest Stats SA population estimates":
             benchmark_year,
             benchmark_url,
             archive_used,
+            benchmark_pdf,
         ) = load_stats_sa_population()
     except Exception as exc:
         st.error(f"Could not load current Stats SA benchmarks: {exc}")
@@ -487,13 +491,32 @@ if source == "Latest Stats SA population estimates":
         f"Source: [Stats SA Mid-year population estimates, {benchmark_year}]"
         f"({benchmark_url})"
     )
+    with st.container(horizontal=True):
+        st.download_button(
+            "Download benchmark data (.csv)",
+            population.to_csv(index=False).encode("utf-8"),
+            file_name=f"stats_sa_population_{benchmark_year}.csv",
+            mime="text/csv",
+            icon=":material/download:",
+            on_click="ignore",
+            wrap=True,
+        )
+        st.download_button(
+            "Download official report (.pdf)",
+            benchmark_pdf,
+            file_name=f"stats_sa_population_{benchmark_year}.pdf",
+            mime="application/pdf",
+            icon=":material/download:",
+            on_click="ignore",
+            wrap=True,
+        )
 
     geography_options = ["South Africa"] + PROVINCES
-    geography = st.selectbox("Benchmark geography", geography_options)
+    geography = st.sidebar.selectbox("Benchmark geography", geography_options)
     dimensions = ["age_group", "sex"]
     if geography == "South Africa":
         dimensions.append("population_group")
-    selected_dimension_labels = st.multiselect(
+    selected_dimension_labels = st.sidebar.multiselect(
         "Demographic dimensions to weight",
         options=[label for label, key in DIMENSIONS.items() if key in dimensions],
         default=["Age group", "Sex"],
@@ -501,6 +524,7 @@ if source == "Latest Stats SA population estimates":
     selected_dimensions = [
         DIMENSIONS[label] for label in selected_dimension_labels
     ]
+    st.sidebar.caption("Map each benchmark dimension to a survey variable.")
 
     if selected_dimensions:
         try:
@@ -517,7 +541,7 @@ if source == "Latest Stats SA population estimates":
                     df.columns.tolist(), dimension, variable_labels
                 )
                 column_options = [None] + df.columns.tolist()
-                variable = st.selectbox(
+                variable = st.sidebar.selectbox(
                     f"Dataset column for {label}",
                     options=column_options,
                     index=(
@@ -566,7 +590,7 @@ if source == "Latest Stats SA population estimates":
         "they cannot be split accurately into custom ranges such as 18–24."
     )
 else:
-    variables = st.multiselect(
+    variables = st.sidebar.multiselect(
         "Survey questions or categories to weight",
         options=df.columns.tolist(),
         help=(
@@ -671,7 +695,9 @@ else:
     else:
         st.info("Select one or more survey questions to continue.")
 
-weight_column = st.text_input("Output weight column name", value="survey_weight")
+weight_column = st.sidebar.text_input(
+    "Output weight column name", value="survey_weight"
+)
 if weight_column in df.columns:
     st.error("Choose a weight-column name that does not already exist.")
     configured = False
@@ -727,85 +753,108 @@ if configured and st.button("Calculate weights", type="primary"):
             efficiency = wp.weighting_efficiency(weight_values)
 
         st.success("Weighting completed.")
-        metric1, metric2, metric3, metric4 = st.columns(4)
-        metric1.metric("Weighting efficiency", f"{efficiency:.1f}%")
-        metric2.metric(
-            "Effective sample size",
-            f"{len(df_weighted) * efficiency / 100:,.0f}",
-        )
-        metric3.metric("Mean weight", f"{weight_values.mean():.3f}")
-        metric4.metric("Maximum weight", f"{weight_values.max():.3f}")
+        with st.container(horizontal=True):
+            st.metric("Weighting efficiency", f"{efficiency:.1f}%", border=True)
+            st.metric(
+                "Effective sample size",
+                f"{len(df_weighted) * efficiency / 100:,.0f}",
+                border=True,
+            )
+            st.metric("Mean weight", f"{weight_values.mean():.3f}", border=True)
+            st.metric("Maximum weight", f"{weight_values.max():.3f}", border=True)
 
-        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-        st.markdown("<h3>Demographic Profile & Weighting Report</h3>", unsafe_allow_html=True)
-        report_rows = []
-        for column in weight_variables:
-            unweighted = (
-                weight_data[column].value_counts(normalize=True) * 100
-            ).rename("Unweighted %")
-            weighted = (
-                df_weighted.groupby(weight_data[column], observed=True)[
-                    weight_column
-                ].sum()
-                / weight_values.sum()
-                * 100
-            ).rename("Weighted %")
+        with st.container(border=True):
+            st.subheader("Weighted sample vs. target")
+            fit_rows = []
+            report_rows = []
+            target_column = (
+                "Stats SA target (%)"
+                if source == "Latest Stats SA population estimates"
+                else "Target (%)"
+            )
+            for column in weight_variables:
+                unweighted = (
+                    weight_data[column].value_counts(normalize=True) * 100
+                ).rename("Unweighted sample (%)")
+                weighted = (
+                    df_weighted.groupby(weight_data[column], observed=True)[
+                        weight_column
+                    ].sum()
+                    / weight_values.sum()
+                    * 100
+                ).rename("Weighted sample (%)")
 
-            if target_data is not None:
-                expected = (
-                    target_data.groupby(column, observed=True)["target_percent"]
-                    .sum()
-                    .rename("Target %")
-                )
-            else:
-                expected = comparison_targets[column].rename("Target %")
-            comparison = pd.concat(
-                [unweighted, expected, weighted], axis=1
-            ).round(2)
-            label = display_names.get(column, column)
-            for index, row in comparison.iterrows():
-                unweighted_percent = float(row.get("Unweighted %", 0) or 0)
-                target_percent = float(row.get("Target %", 0) or 0)
-                weighted_percent = float(row.get("Weighted %", 0) or 0)
-                weight_factor = (
-                    target_percent / unweighted_percent
-                    if unweighted_percent > 0
-                    else 0
-                )
-                report_rows.append(
+                if target_data is not None:
+                    expected = (
+                        target_data.groupby(column, observed=True)["target_percent"]
+                        .sum()
+                        .rename("Target (%)")
+                    )
+                else:
+                    expected = comparison_targets[column].rename("Target (%)")
+                comparison = pd.concat(
+                    [unweighted, expected, weighted], axis=1
+                ).fillna(0)
+                label = display_names.get(column, column)
+                max_gap = (
+                    comparison["Weighted sample (%)"]
+                    - comparison["Target (%)"]
+                ).abs().max()
+                fit_rows.append(
                     {
-                        "Variable": f"{label} - {category_label(index)}",
-                        "Unweighted Sample (%)": unweighted_percent,
-                        "Stats SA Target (%)": target_percent,
-                        "Applied Weight Factor": round(weight_factor, 2),
-                        "Weighted Sample (%)": weighted_percent,
+                        "variable": label,
+                        "max_gap": float(max_gap),
                     }
                 )
-        if report_rows:
-            st.dataframe(
-                pd.DataFrame(report_rows).reset_index(drop=True),
-                width="stretch",
-                hide_index=True,
-                column_config={
-                    "Applied Weight Factor": st.column_config.NumberColumn(
-                        format="%.2f"
+                for category, row in comparison.iterrows():
+                    unweighted_percent = float(row["Unweighted sample (%)"])
+                    target_percent = float(row["Target (%)"])
+                    weighted_percent = float(row["Weighted sample (%)"])
+                    applied_factor = (
+                        weighted_percent / unweighted_percent
+                        if unweighted_percent > 0
+                        else 0
                     )
-                },
-            )
-        st.markdown("</div>", unsafe_allow_html=True)
+                    report_rows.append(
+                        {
+                            "Variable / category": (
+                                f"{label} - {category_label(category)}"
+                            ),
+                            "Unweighted (%)": round(unweighted_percent, 2),
+                            target_column: round(target_percent, 2),
+                            "Applied weight factor": round(applied_factor, 2),
+                            "Final weighted (%)": round(weighted_percent, 2),
+                        }
+                    )
 
-        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-        st.markdown("<h3>Weighting Process Monitor</h3>", unsafe_allow_html=True)
-        st.progress(
-            min(max(efficiency / 100, 0.0), 1.0),
-            text=f"{method} convergence: completed",
-        )
-        effective_sample_size = len(df_weighted) * efficiency / 100
-        st.progress(
-            min(max(effective_sample_size / len(df_weighted), 0.0), 1.0),
-            text=f"Effective Sample Size (NEFF): {effective_sample_size:,.0f}",
-        )
-        st.markdown("</div>", unsafe_allow_html=True)
+            if report_rows:
+                st.dataframe(
+                    pd.DataFrame(report_rows),
+                    width="stretch",
+                    hide_index=True,
+                    column_config={
+                        "Applied weight factor": st.column_config.NumberColumn(
+                            format="%.2f"
+                        )
+                    },
+                )
+
+        with st.container(border=True):
+            st.subheader("Weighting process monitor")
+            st.caption(
+                "Maximum absolute gap between weighted and target category "
+                "shares, in percentage points."
+            )
+            fit_columns = st.columns(min(4, len(fit_rows)))
+            for column, fit in zip(fit_columns, fit_rows):
+                column.metric(
+                    f"{fit['variable']} max gap",
+                    f"{fit['max_gap']:.2f} pp",
+                )
+            st.metric(
+                "Effective sample size (NEFF)",
+                f"{len(df_weighted) * efficiency / 100:,.0f}",
+            )
 
         out_file = "weighted_data.sav"
         with tempfile.TemporaryDirectory() as temp_dir:

@@ -1,0 +1,477 @@
+year,geography,population_group,age_group,sex,population
+2026,South Africa,Black African,0-4,Male,2346797
+2026,South Africa,Black African,0-4,Female,2294800
+2026,South Africa,Coloured,0-4,Male,218709
+2026,South Africa,Coloured,0-4,Female,211932
+2026,South Africa,Indian/Asian,0-4,Male,42661
+2026,South Africa,Indian/Asian,0-4,Female,41147
+2026,South Africa,White,0-4,Male,85885
+2026,South Africa,White,0-4,Female,83470
+2026,South Africa,RSA,0-4,Male,2694052
+2026,South Africa,RSA,0-4,Female,2631349
+2026,South Africa,Black African,5-9,Male,2390424
+2026,South Africa,Black African,5-9,Female,2342370
+2026,South Africa,Coloured,5-9,Male,214188
+2026,South Africa,Coloured,5-9,Female,207777
+2026,South Africa,Indian/Asian,5-9,Male,49321
+2026,South Africa,Indian/Asian,5-9,Female,47364
+2026,South Africa,White,5-9,Male,99736
+2026,South Africa,White,5-9,Female,97065
+2026,South Africa,RSA,5-9,Male,2753669
+2026,South Africa,RSA,5-9,Female,2694576
+2026,South Africa,Black African,10-14,Male,2372484
+2026,South Africa,Black African,10-14,Female,2325168
+2026,South Africa,Coloured,10-14,Male,219728
+2026,South Africa,Coloured,10-14,Female,213638
+2026,South Africa,Indian/Asian,10-14,Male,53321
+2026,South Africa,Indian/Asian,10-14,Female,50842
+2026,South Africa,White,10-14,Male,120159
+2026,South Africa,White,10-14,Female,117075
+2026,South Africa,RSA,10-14,Male,2765692
+2026,South Africa,RSA,10-14,Female,2706723
+2026,South Africa,Black African,15-19,Male,2406149
+2026,South Africa,Black African,15-19,Female,2380298
+2026,South Africa,Coloured,15-19,Male,235481
+2026,South Africa,Coloured,15-19,Female,230176
+2026,South Africa,Indian/Asian,15-19,Male,53363
+2026,South Africa,Indian/Asian,15-19,Female,50614
+2026,South Africa,White,15-19,Male,132152
+2026,South Africa,White,15-19,Female,129891
+2026,South Africa,RSA,15-19,Male,2827145
+2026,South Africa,RSA,15-19,Female,2790979
+2026,South Africa,Black African,20-24,Male,2139227
+2026,South Africa,Black African,20-24,Female,2117865
+2026,South Africa,Coloured,20-24,Male,209140
+2026,South Africa,Coloured,20-24,Female,205662
+2026,South Africa,Indian/Asian,20-24,Male,56316
+2026,South Africa,Indian/Asian,20-24,Female,48428
+2026,South Africa,White,20-24,Male,115466
+2026,South Africa,White,20-24,Female,115745
+2026,South Africa,RSA,20-24,Male,2520149
+2026,South Africa,RSA,20-24,Female,2487700
+2026,South Africa,Black African,25-29,Male,2013428
+2026,South Africa,Black African,25-29,Female,1986252
+2026,South Africa,Coloured,25-29,Male,209275
+2026,South Africa,Coloured,25-29,Female,205874
+2026,South Africa,Indian/Asian,25-29,Male,67898
+2026,South Africa,Indian/Asian,25-29,Female,54748
+2026,South Africa,White,25-29,Male,115375
+2026,South Africa,White,25-29,Female,116068
+2026,South Africa,RSA,25-29,Male,2405976
+2026,South Africa,RSA,25-29,Female,2362942
+2026,South Africa,Black African,30-34,Male,2267478
+2026,South Africa,Black African,30-34,Female,2253327
+2026,South Africa,Coloured,30-34,Male,214856
+2026,South Africa,Coloured,30-34,Female,211728
+2026,South Africa,Indian/Asian,30-34,Male,81207
+2026,South Africa,Indian/Asian,30-34,Female,65271
+2026,South Africa,White,30-34,Male,123643
+2026,South Africa,White,30-34,Female,125163
+2026,South Africa,RSA,30-34,Male,2687184
+2026,South Africa,RSA,30-34,Female,2655489
+2026,South Africa,Black African,35-39,Male,2347775
+2026,South Africa,Black African,35-39,Female,2327432
+2026,South Africa,Coloured,35-39,Male,215057
+2026,South Africa,Coloured,35-39,Female,212024
+2026,South Africa,Indian/Asian,35-39,Male,86676
+2026,South Africa,Indian/Asian,35-39,Female,71863
+2026,South Africa,White,35-39,Male,141711
+2026,South Africa,White,35-39,Female,140801
+2026,South Africa,RSA,35-39,Male,2791219
+2026,South Africa,RSA,35-39,Female,2752120
+2026,South Africa,Black African,40-44,Male,2045720
+2026,South Africa,Black African,40-44,Female,2010594
+2026,South Africa,Coloured,40-44,Male,192498
+2026,South Africa,Coloured,40-44,Female,191397
+2026,South Africa,Indian/Asian,40-44,Male,86680
+2026,South Africa,Indian/Asian,40-44,Female,75231
+2026,South Africa,White,40-44,Male,154366
+2026,South Africa,White,40-44,Female,156356
+2026,South Africa,RSA,40-44,Male,2479264
+2026,South Africa,RSA,40-44,Female,2433578
+2026,South Africa,Black African,45-49,Male,1489383
+2026,South Africa,Black African,45-49,Female,1471469
+2026,South Africa,Coloured,45-49,Male,153018
+2026,South Africa,Coloured,45-49,Female,152810
+2026,South Africa,Indian/Asian,45-49,Male,71794
+2026,South Africa,Indian/Asian,45-49,Female,66491
+2026,South Africa,White,45-49,Male,143888
+2026,South Africa,White,45-49,Female,149649
+2026,South Africa,RSA,45-49,Male,1858083
+2026,South Africa,RSA,45-49,Female,1840419
+2026,South Africa,Black African,50-54,Male,1145383
+2026,South Africa,Black African,50-54,Female,1193881
+2026,South Africa,Coloured,50-54,Male,143637
+2026,South Africa,Coloured,50-54,Female,146139
+2026,South Africa,Indian/Asian,50-54,Male,61689
+2026,South Africa,Indian/Asian,50-54,Female,60762
+2026,South Africa,White,50-54,Male,166019
+2026,South Africa,White,50-54,Female,173878
+2026,South Africa,RSA,50-54,Male,1516728
+2026,South Africa,RSA,50-54,Female,1574660
+2026,South Africa,Black African,55-59,Male,815083
+2026,South Africa,Black African,55-59,Female,976138
+2026,South Africa,Coloured,55-59,Male,132382
+2026,South Africa,Coloured,55-59,Female,146563
+2026,South Africa,Indian/Asian,55-59,Male,50706
+2026,South Africa,Indian/Asian,55-59,Female,51518
+2026,South Africa,White,55-59,Male,162395
+2026,South Africa,White,55-59,Female,172862
+2026,South Africa,RSA,55-59,Male,1160566
+2026,South Africa,RSA,55-59,Female,1347081
+2026,South Africa,Black African,60-64,Male,658682
+2026,South Africa,Black African,60-64,Female,875281
+2026,South Africa,Coloured,60-64,Male,110140
+2026,South Africa,Coloured,60-64,Female,130953
+2026,South Africa,Indian/Asian,60-64,Male,40533
+2026,South Africa,Indian/Asian,60-64,Female,44801
+2026,South Africa,White,60-64,Male,146269
+2026,South Africa,White,60-64,Female,161490
+2026,South Africa,RSA,60-64,Male,955624
+2026,South Africa,RSA,60-64,Female,1212525
+2026,South Africa,Black African,65-69,Male,491913
+2026,South Africa,Black African,65-69,Female,706381
+2026,South Africa,Coloured,65-69,Male,77238
+2026,South Africa,Coloured,65-69,Female,104176
+2026,South Africa,Indian/Asian,65-69,Male,30267
+2026,South Africa,Indian/Asian,65-69,Female,38022
+2026,South Africa,White,65-69,Male,137398
+2026,South Africa,White,65-69,Female,155023
+2026,South Africa,RSA,65-69,Male,736816
+2026,South Africa,RSA,65-69,Female,1003602
+2026,South Africa,Black African,70-74,Male,332023
+2026,South Africa,Black African,70-74,Female,523988
+2026,South Africa,Coloured,70-74,Male,47205
+2026,South Africa,Coloured,70-74,Female,74588
+2026,South Africa,Indian/Asian,70-74,Male,21484
+2026,South Africa,Indian/Asian,70-74,Female,31535
+2026,South Africa,White,70-74,Male,119602
+2026,South Africa,White,70-74,Female,140994
+2026,South Africa,RSA,70-74,Male,520314
+2026,South Africa,RSA,70-74,Female,771105
+2026,South Africa,Black African,75-79,Male,169682
+2026,South Africa,Black African,75-79,Female,336922
+2026,South Africa,Coloured,75-79,Male,24333
+2026,South Africa,Coloured,75-79,Female,46023
+2026,South Africa,Indian/Asian,75-79,Male,13144
+2026,South Africa,Indian/Asian,75-79,Female,23741
+2026,South Africa,White,75-79,Male,98442
+2026,South Africa,White,75-79,Female,125341
+2026,South Africa,RSA,75-79,Male,305601
+2026,South Africa,RSA,75-79,Female,532027
+2026,South Africa,Black African,80+,Male,93704
+2026,South Africa,Black African,80+,Female,268666
+2026,South Africa,Coloured,80+,Male,14735
+2026,South Africa,Coloured,80+,Female,38812
+2026,South Africa,Indian/Asian,80+,Male,9323
+2026,South Africa,Indian/Asian,80+,Female,24295
+2026,South Africa,White,80+,Male,115366
+2026,South Africa,White,80+,Female,182522
+2026,South Africa,RSA,80+,Male,233128
+2026,South Africa,RSA,80+,Female,514295
+2026,Eastern Cape,All population groups,0-4,Male,338416
+2026,Eastern Cape,All population groups,0-4,Female,333357
+2026,Free State,All population groups,0-4,Male,131328
+2026,Free State,All population groups,0-4,Female,130083
+2026,Gauteng,All population groups,0-4,Male,590876
+2026,Gauteng,All population groups,0-4,Female,575165
+2026,KwaZulu-Natal,All population groups,0-4,Male,564233
+2026,KwaZulu-Natal,All population groups,0-4,Female,549540
+2026,Eastern Cape,All population groups,5-9,Male,348213
+2026,Eastern Cape,All population groups,5-9,Female,345782
+2026,Free State,All population groups,5-9,Male,130450
+2026,Free State,All population groups,5-9,Female,131133
+2026,Gauteng,All population groups,5-9,Male,596411
+2026,Gauteng,All population groups,5-9,Female,580523
+2026,KwaZulu-Natal,All population groups,5-9,Male,581549
+2026,KwaZulu-Natal,All population groups,5-9,Female,567639
+2026,Eastern Cape,All population groups,10-14,Male,358058
+2026,Eastern Cape,All population groups,10-14,Female,355335
+2026,Free State,All population groups,10-14,Male,135146
+2026,Free State,All population groups,10-14,Female,136783
+2026,Gauteng,All population groups,10-14,Male,587651
+2026,Gauteng,All population groups,10-14,Female,570068
+2026,KwaZulu-Natal,All population groups,10-14,Male,579540
+2026,KwaZulu-Natal,All population groups,10-14,Female,566036
+2026,Eastern Cape,All population groups,15-19,Male,351256
+2026,Eastern Cape,All population groups,15-19,Female,351454
+2026,Free State,All population groups,15-19,Male,141575
+2026,Free State,All population groups,15-19,Female,146915
+2026,Gauteng,All population groups,15-19,Male,616905
+2026,Gauteng,All population groups,15-19,Female,607342
+2026,KwaZulu-Natal,All population groups,15-19,Male,590736
+2026,KwaZulu-Natal,All population groups,15-19,Female,584566
+2026,Eastern Cape,All population groups,20-24,Male,256890
+2026,Eastern Cape,All population groups,20-24,Female,278459
+2026,Free State,All population groups,20-24,Male,122377
+2026,Free State,All population groups,20-24,Female,130488
+2026,Gauteng,All population groups,20-24,Male,646296
+2026,Gauteng,All population groups,20-24,Female,615963
+2026,KwaZulu-Natal,All population groups,20-24,Male,504151
+2026,KwaZulu-Natal,All population groups,20-24,Female,509567
+2026,Eastern Cape,All population groups,25-29,Male,210220
+2026,Eastern Cape,All population groups,25-29,Female,234332
+2026,Free State,All population groups,25-29,Male,107886
+2026,Free State,All population groups,25-29,Female,115612
+2026,Gauteng,All population groups,25-29,Male,668769
+2026,Gauteng,All population groups,25-29,Female,631175
+2026,KwaZulu-Natal,All population groups,25-29,Male,470201
+2026,KwaZulu-Natal,All population groups,25-29,Female,482888
+2026,Eastern Cape,All population groups,30-34,Male,239320
+2026,Eastern Cape,All population groups,30-34,Female,270359
+2026,Free State,All population groups,30-34,Male,115848
+2026,Free State,All population groups,30-34,Female,124243
+2026,Gauteng,All population groups,30-34,Male,763326
+2026,Gauteng,All population groups,30-34,Female,732475
+2026,KwaZulu-Natal,All population groups,30-34,Male,516841
+2026,KwaZulu-Natal,All population groups,30-34,Female,535360
+2026,Eastern Cape,All population groups,35-39,Male,236182
+2026,Eastern Cape,All population groups,35-39,Female,265592
+2026,Free State,All population groups,35-39,Male,120493
+2026,Free State,All population groups,35-39,Female,129916
+2026,Gauteng,All population groups,35-39,Male,833067
+2026,Gauteng,All population groups,35-39,Female,803519
+2026,KwaZulu-Natal,All population groups,35-39,Male,517858
+2026,KwaZulu-Natal,All population groups,35-39,Female,526810
+2026,Eastern Cape,All population groups,40-44,Male,204878
+2026,Eastern Cape,All population groups,40-44,Female,222837
+2026,Free State,All population groups,40-44,Male,105704
+2026,Free State,All population groups,40-44,Female,114010
+2026,Gauteng,All population groups,40-44,Male,751592
+2026,Gauteng,All population groups,40-44,Female,737974
+2026,KwaZulu-Natal,All population groups,40-44,Male,434385
+2026,KwaZulu-Natal,All population groups,40-44,Female,451698
+2026,Eastern Cape,All population groups,45-49,Male,160201
+2026,Eastern Cape,All population groups,45-49,Female,175814
+2026,Free State,All population groups,45-49,Male,79773
+2026,Free State,All population groups,45-49,Female,89057
+2026,Gauteng,All population groups,45-49,Male,576946
+2026,Gauteng,All population groups,45-49,Female,531103
+2026,KwaZulu-Natal,All population groups,45-49,Male,302689
+2026,KwaZulu-Natal,All population groups,45-49,Female,333417
+2026,Eastern Cape,All population groups,50-54,Male,134905
+2026,Eastern Cape,All population groups,50-54,Female,166954
+2026,Free State,All population groups,50-54,Male,66983
+2026,Free State,All population groups,50-54,Female,80563
+2026,Gauteng,All population groups,50-54,Male,473318
+2026,Gauteng,All population groups,50-54,Female,411626
+2026,KwaZulu-Natal,All population groups,50-54,Male,243878
+2026,KwaZulu-Natal,All population groups,50-54,Female,289116
+2026,Eastern Cape,All population groups,55-59,Male,106958
+2026,Eastern Cape,All population groups,55-59,Female,155187
+2026,Free State,All population groups,55-59,Male,54329
+2026,Free State,All population groups,55-59,Female,72517
+2026,Gauteng,All population groups,55-59,Male,355438
+2026,Gauteng,All population groups,55-59,Female,335615
+2026,KwaZulu-Natal,All population groups,55-59,Male,176841
+2026,KwaZulu-Natal,All population groups,55-59,Female,243676
+2026,Eastern Cape,All population groups,60-64,Male,93070
+2026,Eastern Cape,All population groups,60-64,Female,152018
+2026,Free State,All population groups,60-64,Male,46091
+2026,Free State,All population groups,60-64,Female,65312
+2026,Gauteng,All population groups,60-64,Male,288109
+2026,Gauteng,All population groups,60-64,Female,287792
+2026,KwaZulu-Natal,All population groups,60-64,Male,147046
+2026,KwaZulu-Natal,All population groups,60-64,Female,228530
+2026,Eastern Cape,All population groups,65-69,Male,78927
+2026,Eastern Cape,All population groups,65-69,Female,139743
+2026,Free State,All population groups,65-69,Male,35894
+2026,Free State,All population groups,65-69,Female,53635
+2026,Gauteng,All population groups,65-69,Male,222891
+2026,Gauteng,All population groups,65-69,Female,235421
+2026,KwaZulu-Natal,All population groups,65-69,Male,112242
+2026,KwaZulu-Natal,All population groups,65-69,Female,188145
+2026,Eastern Cape,All population groups,70-74,Male,60283
+2026,Eastern Cape,All population groups,70-74,Female,109789
+2026,Free State,All population groups,70-74,Male,25396
+2026,Free State,All population groups,70-74,Female,42634
+2026,Gauteng,All population groups,70-74,Male,155435
+2026,Gauteng,All population groups,70-74,Female,175856
+2026,KwaZulu-Natal,All population groups,70-74,Male,80442
+2026,KwaZulu-Natal,All population groups,70-74,Female,143134
+2026,Eastern Cape,All population groups,75-79,Male,39716
+2026,Eastern Cape,All population groups,75-79,Female,78888
+2026,Free State,All population groups,75-79,Male,13986
+2026,Free State,All population groups,75-79,Female,29021
+2026,Gauteng,All population groups,75-79,Male,89015
+2026,Gauteng,All population groups,75-79,Female,115832
+2026,KwaZulu-Natal,All population groups,75-79,Male,47669
+2026,KwaZulu-Natal,All population groups,75-79,Female,102213
+2026,Eastern Cape,All population groups,80+,Male,60012
+2026,Eastern Cape,All population groups,80+,Female,117700
+2026,Free State,All population groups,80+,Male,8248
+2026,Free State,All population groups,80+,Female,27542
+2026,Gauteng,All population groups,80+,Male,47003
+2026,Gauteng,All population groups,80+,Female,84827
+2026,KwaZulu-Natal,All population groups,80+,Male,32064
+2026,KwaZulu-Natal,All population groups,80+,Female,78134
+2026,Limpopo,All population groups,0-4,Male,326963
+2026,Limpopo,All population groups,0-4,Female,319000
+2026,Mpumalanga,All population groups,0-4,Male,227562
+2026,Mpumalanga,All population groups,0-4,Female,223699
+2026,Northern Cape,All population groups,0-4,Male,64524
+2026,Northern Cape,All population groups,0-4,Female,63552
+2026,North West,All population groups,0-4,Male,184412
+2026,North West,All population groups,0-4,Female,179651
+2026,Western Cape,All population groups,0-4,Male,265739
+2026,Western Cape,All population groups,0-4,Female,257303
+2026,Limpopo,All population groups,5-9,Male,337840
+2026,Limpopo,All population groups,5-9,Female,329566
+2026,Mpumalanga,All population groups,5-9,Male,232351
+2026,Mpumalanga,All population groups,5-9,Female,229503
+2026,Northern Cape,All population groups,5-9,Male,64096
+2026,Northern Cape,All population groups,5-9,Female,63495
+2026,North West,All population groups,5-9,Male,185386
+2026,North West,All population groups,5-9,Female,179752
+2026,Western Cape,All population groups,5-9,Male,277374
+2026,Western Cape,All population groups,5-9,Female,267182
+2026,Limpopo,All population groups,10-14,Male,332726
+2026,Limpopo,All population groups,10-14,Female,324634
+2026,Mpumalanga,All population groups,10-14,Male,226056
+2026,Mpumalanga,All population groups,10-14,Female,223637
+2026,Northern Cape,All population groups,10-14,Male,61308
+2026,Northern Cape,All population groups,10-14,Female,60924
+2026,North West,All population groups,10-14,Male,185307
+2026,North West,All population groups,10-14,Female,180030
+2026,Western Cape,All population groups,10-14,Male,299900
+2026,Western Cape,All population groups,10-14,Female,289277
+2026,Limpopo,All population groups,15-19,Male,322399
+2026,Limpopo,All population groups,15-19,Female,310853
+2026,Mpumalanga,All population groups,15-19,Male,234914
+2026,Mpumalanga,All population groups,15-19,Female,233900
+2026,Northern Cape,All population groups,15-19,Male,60589
+2026,Northern Cape,All population groups,15-19,Female,59989
+2026,North West,All population groups,15-19,Male,193426
+2026,North West,All population groups,15-19,Female,189511
+2026,Western Cape,All population groups,15-19,Male,315345
+2026,Western Cape,All population groups,15-19,Female,306449
+2026,Limpopo,All population groups,20-24,Male,248323
+2026,Limpopo,All population groups,20-24,Female,242177
+2026,Mpumalanga,All population groups,20-24,Male,202938
+2026,Mpumalanga,All population groups,20-24,Female,201214
+2026,Northern Cape,All population groups,20-24,Male,55796
+2026,Northern Cape,All population groups,20-24,Female,53580
+2026,North West,All population groups,20-24,Male,177213
+2026,North West,All population groups,20-24,Female,168111
+2026,Western Cape,All population groups,20-24,Male,306164
+2026,Western Cape,All population groups,20-24,Female,288141
+2026,Limpopo,All population groups,25-29,Male,215831
+2026,Limpopo,All population groups,25-29,Female,215495
+2026,Mpumalanga,All population groups,25-29,Male,204744
+2026,Mpumalanga,All population groups,25-29,Female,201107
+2026,Northern Cape,All population groups,25-29,Male,52521
+2026,Northern Cape,All population groups,25-29,Female,49319
+2026,North West,All population groups,25-29,Male,168360
+2026,North West,All population groups,25-29,Female,149711
+2026,Western Cape,All population groups,25-29,Male,307442
+2026,Western Cape,All population groups,25-29,Female,283303
+2026,Limpopo,All population groups,30-34,Male,244365
+2026,Limpopo,All population groups,30-34,Female,243948
+2026,Mpumalanga,All population groups,30-34,Male,226169
+2026,Mpumalanga,All population groups,30-34,Female,216879
+2026,Northern Cape,All population groups,30-34,Male,56855
+2026,Northern Cape,All population groups,30-34,Female,52529
+2026,North West,All population groups,30-34,Male,188221
+2026,North West,All population groups,30-34,Female,163996
+2026,Western Cape,All population groups,30-34,Male,336238
+2026,Western Cape,All population groups,30-34,Female,315701
+2026,Limpopo,All population groups,35-39,Male,241636
+2026,Limpopo,All population groups,35-39,Female,240605
+2026,Mpumalanga,All population groups,35-39,Male,236073
+2026,Mpumalanga,All population groups,35-39,Female,221183
+2026,Northern Cape,All population groups,35-39,Male,57485
+2026,Northern Cape,All population groups,35-39,Female,53626
+2026,North West,All population groups,35-39,Male,195211
+2026,North West,All population groups,35-39,Female,171158
+2026,Western Cape,All population groups,35-39,Male,353213
+2026,Western Cape,All population groups,35-39,Female,339709
+2026,Limpopo,All population groups,40-44,Male,211737
+2026,Limpopo,All population groups,40-44,Female,202391
+2026,Mpumalanga,All population groups,40-44,Male,214649
+2026,Mpumalanga,All population groups,40-44,Female,192376
+2026,Northern Cape,All population groups,40-44,Male,52136
+2026,Northern Cape,All population groups,40-44,Female,46540
+2026,North West,All population groups,40-44,Male,174305
+2026,North West,All population groups,40-44,Female,147405
+2026,Western Cape,All population groups,40-44,Male,329876
+2026,Western Cape,All population groups,40-44,Female,318347
+2026,Limpopo,All population groups,45-49,Male,155532
+2026,Limpopo,All population groups,45-49,Female,169404
+2026,Mpumalanga,All population groups,45-49,Male,153861
+2026,Mpumalanga,All population groups,45-49,Female,144907
+2026,Northern Cape,All population groups,45-49,Male,39987
+2026,Northern Cape,All population groups,45-49,Female,35406
+2026,North West,All population groups,45-49,Male,134810
+2026,North West,All population groups,45-49,Female,113877
+2026,Western Cape,All population groups,45-49,Male,254284
+2026,Western Cape,All population groups,45-49,Female,247435
+2026,Limpopo,All population groups,50-54,Male,121579
+2026,Limpopo,All population groups,50-54,Female,154063
+2026,Mpumalanga,All population groups,50-54,Male,117610
+2026,Mpumalanga,All population groups,50-54,Female,125197
+2026,Northern Cape,All population groups,50-54,Male,32685
+2026,Northern Cape,All population groups,50-54,Female,31827
+2026,North West,All population groups,50-54,Male,107645
+2026,North West,All population groups,50-54,Female,100253
+2026,Western Cape,All population groups,50-54,Male,218126
+2026,Western Cape,All population groups,50-54,Female,215062
+2026,Limpopo,All population groups,55-59,Male,92049
+2026,Limpopo,All population groups,55-59,Female,127573
+2026,Mpumalanga,All population groups,55-59,Male,86834
+2026,Mpumalanga,All population groups,55-59,Female,104387
+2026,Northern Cape,All population groups,55-59,Male,25956
+2026,Northern Cape,All population groups,55-59,Female,28910
+2026,North West,All population groups,55-59,Male,84772
+2026,North West,All population groups,55-59,Female,84779
+2026,Western Cape,All population groups,55-59,Male,177388
+2026,Western Cape,All population groups,55-59,Female,194437
+2026,Limpopo,All population groups,60-64,Male,72909
+2026,Limpopo,All population groups,60-64,Female,118887
+2026,Mpumalanga,All population groups,60-64,Male,70671
+2026,Mpumalanga,All population groups,60-64,Female,90583
+2026,Northern Cape,All population groups,60-64,Male,20708
+2026,Northern Cape,All population groups,60-64,Female,25843
+2026,North West,All population groups,60-64,Male,71268
+2026,North West,All population groups,60-64,Female,73417
+2026,Western Cape,All population groups,60-64,Male,145753
+2026,Western Cape,All population groups,60-64,Female,170142
+2026,Limpopo,All population groups,65-69,Male,54013
+2026,Limpopo,All population groups,65-69,Female,97740
+2026,Mpumalanga,All population groups,65-69,Male,51773
+2026,Mpumalanga,All population groups,65-69,Female,68492
+2026,Northern Cape,All population groups,65-69,Male,16469
+2026,Northern Cape,All population groups,65-69,Female,22024
+2026,North West,All population groups,65-69,Male,54034
+2026,North West,All population groups,65-69,Female,59180
+2026,Western Cape,All population groups,65-69,Male,110573
+2026,Western Cape,All population groups,65-69,Female,139221
+2026,Limpopo,All population groups,70-74,Male,38565
+2026,Limpopo,All population groups,70-74,Female,81605
+2026,Mpumalanga,All population groups,70-74,Male,36306
+2026,Mpumalanga,All population groups,70-74,Female,53265
+2026,Northern Cape,All population groups,70-74,Male,12159
+2026,Northern Cape,All population groups,70-74,Female,18137
+2026,North West,All population groups,70-74,Male,33200
+2026,North West,All population groups,70-74,Female,44873
+2026,Western Cape,All population groups,70-74,Male,78528
+2026,Western Cape,All population groups,70-74,Female,101811
+2026,Limpopo,All population groups,75-79,Male,23022
+2026,Limpopo,All population groups,75-79,Female,57107
+2026,Mpumalanga,All population groups,75-79,Male,20070
+2026,Mpumalanga,All population groups,75-79,Female,34724
+2026,Northern Cape,All population groups,75-79,Male,7175
+2026,Northern Cape,All population groups,75-79,Female,13200
+2026,North West,All population groups,75-79,Male,16604
+2026,North West,All population groups,75-79,Female,29567
+2026,Western Cape,All population groups,75-79,Male,48343
+2026,Western Cape,All population groups,75-79,Female,71476
+2026,Limpopo,All population groups,80+,Male,20043
+2026,Limpopo,All population groups,80+,Female,64088
+2026,Mpumalanga,All population groups,80+,Male,16477
+2026,Mpumalanga,All population groups,80+,Female,37632
+2026,Northern Cape,All population groups,80+,Male,5967
+2026,Northern Cape,All population groups,80+,Female,16456
+2026,North West,All population groups,80+,Male,6948
+2026,North West,All population groups,80+,Female,31402
+2026,Western Cape,All population groups,80+,Male,36366
+2026,Western Cape,All population groups,80+,Female,56513

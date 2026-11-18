@@ -86,7 +86,7 @@ def fetch_latest_stats_sa_population(current_year=None, timeout=30):
         except Exception as exc:
             errors.append(f"{candidate_year}: could not read PDF ({exc})")
             continue
-        return table, candidate_year, url
+        return table, candidate_year, url, pdf_bytes
 
     detail = "; ".join(errors) if errors else "no recent publication was found"
     raise RuntimeError(f"Could not retrieve Stats SA population estimates: {detail}")
@@ -94,10 +94,10 @@ def fetch_latest_stats_sa_population(current_year=None, timeout=30):
 
 def load_stats_sa_population(current_year=None, timeout=30):
     try:
-        population, year, url = fetch_latest_stats_sa_population(
+        population, year, url, pdf_bytes = fetch_latest_stats_sa_population(
             current_year=current_year, timeout=timeout
         )
-        return population, year, url, False
+        return population, year, url, False, pdf_bytes
     except RuntimeError as live_error:
         archive_path = (
             Path(__file__).parent
@@ -108,6 +108,7 @@ def load_stats_sa_population(current_year=None, timeout=30):
             raise RuntimeError(
                 f"{live_error}; the archived Stats SA benchmark file is missing"
             ) from live_error
+        archive_pdf_path = archive_path.with_suffix(".pdf")
 
         try:
             population = pd.read_csv(archive_path)
@@ -115,6 +116,14 @@ def load_stats_sa_population(current_year=None, timeout=30):
             raise RuntimeError(
                 f"Could not read the archived Stats SA benchmark file: {exc}"
             ) from exc
+        try:
+            pdf_bytes = archive_pdf_path.read_bytes()
+        except OSError as exc:
+            raise RuntimeError(
+                f"Could not read the archived Stats SA report: {exc}"
+            ) from exc
+        if not pdf_bytes.startswith(b"%PDF"):
+            raise ValueError("The archived Stats SA report is not a valid PDF.")
 
         required_columns = {
             "year",
@@ -146,6 +155,7 @@ def load_stats_sa_population(current_year=None, timeout=30):
             STATS_SA_ARCHIVE_YEAR,
             STATS_SA_ARCHIVE_URL,
             True,
+            pdf_bytes,
         )
 
 
