@@ -60,13 +60,15 @@ def fetch_latest_stats_sa_population(current_year=None, timeout=30):
             errors.append(f"{candidate_year}: {exc.reason}")
             break
 
+        if not pdf_bytes.startswith(b"%PDF"):
+            errors.append(f"{candidate_year}: publication is not a PDF")
+            continue
+
         try:
             table = parse_stats_sa_population_pdf(pdf_bytes, candidate_year)
         except Exception as exc:
-            raise ValueError(
-                f"Could not read the Stats SA {candidate_year} population "
-                f"tables: {exc}"
-            ) from exc
+            errors.append(f"{candidate_year}: could not read PDF ({exc})")
+            continue
         return table, candidate_year, url
 
     detail = "; ".join(errors) if errors else "no recent publication was found"
