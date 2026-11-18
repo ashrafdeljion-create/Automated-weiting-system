@@ -15,6 +15,7 @@ from weighting import (
     age_value_to_group,
     load_stats_sa_population as load_stats_sa_benchmarks,
     poststratification_weights,
+    raking_targets_from_target_table,
     stats_sa_targets,
 )
 
@@ -581,6 +582,14 @@ if source == "Latest Stats SA population estimates":
                         "category mappings before weighting."
                     )
                 else:
+                    if method == "Raking":
+                        targets = raking_targets_from_target_table(
+                            target_data, weight_variables
+                        )
+                        comparison_targets = {
+                            column: pd.Series(distribution)
+                            for column, distribution in targets.items()
+                        }
                     configured = True
         except Exception as exc:
             st.error(f"Could not configure Stats SA targets: {exc}")
@@ -706,6 +715,12 @@ if configured and st.button("Calculate weights", type="primary"):
     try:
         with st.spinner("Calculating and checking weights..."):
             if method == "Raking":
+                missing_targets = set(weight_variables) - set(targets)
+                if missing_targets:
+                    raise ValueError(
+                        "Raking target distributions are missing for: "
+                        + ", ".join(sorted(missing_targets))
+                    )
                 for column, distribution in targets.items():
                     observed = set(weight_data[column].dropna().unique())
                     positive_targets = {

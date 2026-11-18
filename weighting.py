@@ -299,6 +299,34 @@ def stats_sa_targets(population, geography, dimensions):
     return target
 
 
+def raking_targets_from_target_table(target_data, dimensions):
+    if not dimensions:
+        raise ValueError("Select at least one Raking dimension.")
+    required = set(dimensions) | {"target_percent"}
+    if not required.issubset(target_data.columns):
+        raise ValueError("The target table is missing Raking dimensions.")
+
+    target_percent = pd.to_numeric(target_data["target_percent"], errors="raise")
+    if target_percent.isna().any() or (target_percent < 0).any():
+        raise ValueError("Raking targets must be present and non-negative.")
+    if abs(target_percent.sum() - 100) > 0.01:
+        raise ValueError("Raking target percentages must sum to 100.")
+
+    targets = {}
+    for dimension in dimensions:
+        if target_data[dimension].isna().any():
+            raise ValueError(
+                f"Raking target dimension '{dimension}' contains missing values."
+            )
+        margin = (
+            target_data.assign(target_percent=target_percent)
+            .groupby(dimension, observed=True)["target_percent"]
+            .sum()
+        )
+        targets[dimension] = margin.to_dict()
+    return targets
+
+
 def age_value_to_group(value):
     try:
         age = float(value)
