@@ -89,7 +89,7 @@ st.markdown(
 
 
 @st.cache_data(ttl="1d", max_entries=1)
-def load_stats_sa_population():
+def load_stats_sa_population(cache_schema_version):
     return load_stats_sa_benchmarks()
 
 
@@ -470,7 +470,7 @@ if source == "Latest Stats SA population estimates":
             benchmark_url,
             archive_used,
             benchmark_pdf,
-        ) = load_stats_sa_population()
+        ) = load_stats_sa_population(cache_schema_version=2)
     except Exception as exc:
         st.error(f"Could not load current Stats SA benchmarks: {exc}")
         st.info("You can switch to manually entered targets or a target CSV.")
