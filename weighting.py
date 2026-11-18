@@ -327,6 +327,20 @@ def raking_targets_from_target_table(target_data, dimensions):
     return targets
 
 
+def missing_positive_raking_categories(data, targets):
+    missing = {}
+    for column, distribution in targets.items():
+        observed = set(data[column].dropna().unique())
+        categories = [
+            category
+            for category, target_percent in distribution.items()
+            if target_percent > 0 and category not in observed
+        ]
+        if categories:
+            missing[column] = sorted(categories, key=str)
+    return missing
+
+
 def age_value_to_group(value):
     try:
         age = float(value)

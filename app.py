@@ -14,6 +14,7 @@ from weighting import (
     PROVINCES,
     age_value_to_group,
     load_stats_sa_population as load_stats_sa_benchmarks,
+    missing_positive_raking_categories,
     poststratification_weights,
     raking_targets_from_target_table,
     stats_sa_targets,
@@ -721,19 +722,28 @@ if configured and st.button("Calculate weights", type="primary"):
                         "Raking target distributions are missing for: "
                         + ", ".join(sorted(missing_targets))
                     )
-                for column, distribution in targets.items():
-                    observed = set(weight_data[column].dropna().unique())
-                    positive_targets = {
-                        category
-                        for category, value in distribution.items()
-                        if value > 0
-                    }
-                    if not positive_targets.issubset(observed):
-                        raise ValueError(
-                            "A positive target category has no respondents in "
-                            "the sample. The survey population and benchmark "
-                            "may not match."
-                        )
+                missing_categories = missing_positive_raking_categories(
+                    weight_data, targets
+                )
+                if missing_categories:
+                    details = "; ".join(
+                        f"{display_names.get(column, column)}: "
+                        + ", ".join(categories)
+                        for column, categories in missing_categories.items()
+                    )
+                    guidance = (
+                        "Check that the survey covers the benchmark population "
+                        "and that category mappings are correct. If age is "
+                        "available as individual numeric values, select that "
+                        "column so the app can group ages into Stats SA's "
+                        "five-year bands. Custom age bands that cross those "
+                        "boundaries cannot be split accurately; use a matching "
+                        "verified benchmark instead of estimating figures."
+                    )
+                    raise ValueError(
+                        "Positive target categories have no respondents "
+                        f"({details}). {guidance}"
+                    )
                 scheme = wp.scheme_from_dict(targets)
                 weighted_subset = wp.weight_dataframe(
                     weight_data[weight_variables].copy(),
