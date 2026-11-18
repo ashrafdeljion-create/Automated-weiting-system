@@ -5,10 +5,12 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
 
-TEAL = "#00727D"
-NAVY = "#0B2437"
-AMBER = "#E5A33B"
-SLATE = "#4895B7"
+TEAL = "#27C6B4"
+BLUE = "#58B7E5"
+AMBER = "#F2B84B"
+CORAL = "#F27672"
+VIOLET = "#B39DDB"
+MUTED = "#A7C6D9"
 
 
 def comparison_figure(comparison: pd.DataFrame):
@@ -52,7 +54,7 @@ def comparison_figure(comparison: pd.DataFrame):
         category_orders={"Series": list(series_columns.values())},
         labels={"Percent": "Share (%)"},
         title="Sample and benchmark distributions",
-        color_discrete_sequence=["#8CA4B3", TEAL, AMBER],
+        color_discrete_sequence=[MUTED, TEAL, AMBER],
     )
     figure.update_layout(
         height=max(380, 260 * comparison["Variable"].nunique()),
@@ -126,9 +128,9 @@ def margin_error_figure(comparison: pd.DataFrame):
         facet_row="Variable" if comparison["Variable"].nunique() > 1 else None,
         labels={"Margin error (pp)": "Weighted minus target (pp)"},
         title="Residual differences from benchmark margins",
-        color_discrete_sequence=[TEAL, NAVY, AMBER, SLATE, "#8A6FB1"],
+        color_discrete_sequence=[TEAL, BLUE, AMBER, CORAL, VIOLET],
     )
-    figure.add_hline(y=0, line_dash="dash", line_color=NAVY)
+    figure.add_hline(y=0, line_dash="dash", line_color=MUTED)
     figure.update_layout(
         height=max(360, 240 * comparison["Variable"].nunique()),
         showlegend=comparison["Variable"].nunique() == 1,
