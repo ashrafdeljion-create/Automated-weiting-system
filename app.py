@@ -394,6 +394,17 @@ with st.sidebar:
             "It does not publish household or personal income margins in this table."
         ),
     )
+    target_csv_upload = None
+    if source == "Upload target CSV":
+        target_csv_upload = st.file_uploader(
+            "Upload target CSV",
+            type=["csv"],
+            key=f"target_csv_{file_key}_{method}",
+            help=(
+                "You can upload this now or after selecting survey variables. "
+                "The app validates categories once the variables are selected."
+            ),
+        )
 
 if method in {"linear", "logit"}:
     st.warning(
@@ -593,7 +604,14 @@ else:
             for variable in selected_variables
         }
     else:
-        st.info("Select one or more survey variables.")
+        if source == "Upload target CSV":
+            st.info(
+                "Select one or more survey variables to validate the uploaded "
+                "target CSV. The uploader is directly below Benchmark source in "
+                "the sidebar."
+            )
+        else:
+            st.info("Select one or more survey variables.")
 
 if weight_variables:
     if source == "Latest Stats SA population estimates":
@@ -640,10 +658,11 @@ else:
     configured = False
 
 if source != "Latest Stats SA population estimates" and weight_variables:
-    st.caption(
-        "Targets entered here are editable starting values based on the included "
-        "sample, not external benchmarks. Replace them with verified target figures."
-    )
+    if source == "Enter target percentages":
+        st.caption(
+            "Targets entered here are editable starting values based on the included "
+            "sample, not external benchmarks. Replace them with verified target figures."
+        )
     if not active_data.empty:
         template = _custom_target_template(
             active_data, source_variables, source_to_internal, method
@@ -709,15 +728,10 @@ if source != "Latest Stats SA population estimates" and weight_variables:
                     "Margin target CSV columns: `variable`, `category`, and "
                     "`target_percent`."
                 )
-            target_csv = st.file_uploader(
-                "Upload target CSV",
-                type=["csv"],
-                key=f"target_csv_{file_key}_{method}",
-            )
-            if target_csv is not None:
+            if target_csv_upload is not None:
                 try:
                     targets, target_data = _read_custom_target_csv(
-                        target_csv,
+                        target_csv_upload,
                         source_variables,
                         source_to_internal,
                         active_data,
