@@ -38,7 +38,7 @@ from weighting_engine import (
 
 
 st.set_page_config(
-    page_title="Survey weighting and visualization",
+    page_title="Survey weighting studio",
     page_icon=":material/analytics:",
     layout="wide",
 )
@@ -229,6 +229,13 @@ def _targets_from_margin_table(table, variables, mapping, active_data):
 def _joint_target_from_table(table, variables, mapping):
     required = set(variables) | {"target_percent"}
     if not required.issubset(table.columns):
+        if {"variable", "category", "target_percent"}.issubset(table.columns):
+            raise ValueError(
+                "This CSV contains marginal targets (variable, category, "
+                "target_percent), which are for Raking / RIM or calibration. "
+                "Post-stratification needs joint target cells: one column per "
+                "selected survey variable, plus target_percent."
+            )
         raise ValueError(
             "A joint target table needs one column per selected variable, "
             "plus target_percent."
@@ -310,14 +317,29 @@ def _result_signature(
     ).hexdigest()
 
 
-st.title("Survey weighting and visualization")
-st.caption(
-    "Map survey variables to credible population targets, fit survey weights, "
-    "inspect diagnostics, and export the results."
-)
+with st.container(border=True):
+    title_col, badge_col = st.columns([5, 2])
+    with title_col:
+        st.caption("RESEARCH DATA WORKSPACE")
+        st.title("Survey weighting studio", icon=":material/analytics:")
+        st.write(
+            "Map survey variables to population targets, fit weights, review "
+            "diagnostics, and export publication-ready results."
+        )
+    with badge_col:
+        st.badge(
+            "Stats SA benchmarks",
+            icon=":material/public:",
+            color="blue",
+        )
+        st.badge(
+            "SPSS · CSV · Excel",
+            icon=":material/dataset:",
+            color="green",
+        )
 
 with st.sidebar:
-    st.header("Survey data")
+    st.header("Survey data", icon=":material/upload_file:")
     uploaded_file = st.file_uploader(
         "Upload an SPSS file",
         type=["sav"],
@@ -374,7 +396,7 @@ method_labels = {
     "Logit calibration (bounded)": "logit",
 }
 with st.sidebar:
-    st.header("Weighting configuration")
+    st.header("Weighting configuration", icon=":material/tune:")
     method_label = st.selectbox(
         "Weighting method",
         list(method_labels),
@@ -399,12 +421,23 @@ with st.sidebar:
         target_csv_upload = st.file_uploader(
             "Upload target CSV",
             type=["csv"],
-            key=f"target_csv_{file_key}_{method}",
+            key=f"target_csv_{file_key}",
             help=(
                 "You can upload this now or after selecting survey variables. "
                 "The app validates categories once the variables are selected."
             ),
         )
+        if method == "poststratification":
+            st.caption(
+                "Post-stratification requires joint cells (one column per "
+                "selected variable plus target_percent). A CSV with "
+                "variable/category/target_percent margins is for Raking / RIM."
+            )
+        else:
+            st.caption(
+                "Raking and calibration use variable/category/target_percent "
+                "marginal targets."
+            )
 
 if method in {"linear", "logit"}:
     st.warning(
@@ -838,7 +871,7 @@ if configured and not active_data.empty:
             configured = False
 
 with st.sidebar:
-    st.header("Output and quality controls")
+    st.header("Output and quality controls", icon=":material/settings:")
     weight_column = st.text_input("Output weight variable", value="survey_weight")
     trim_method = st.selectbox(
         "Weight trimming",
@@ -1157,7 +1190,10 @@ if result is not None and result.get("key") == current_result_key:
     chart_col, distribution_col = st.columns(2)
     with chart_col:
         with st.container(border=True):
-            st.subheader("Sample and target distributions")
+            st.subheader(
+                "Sample and target distributions",
+                icon=":material/bar_chart:",
+            )
             st.plotly_chart(
                 comparison_figure(comparison),
                 width="stretch",
@@ -1165,14 +1201,17 @@ if result is not None and result.get("key") == current_result_key:
             )
     with distribution_col:
         with st.container(border=True):
-            st.subheader("Weight distribution")
+            st.subheader("Weight distribution", icon=":material/monitoring:")
             st.plotly_chart(
                 weight_distribution_figure(result["weights"]),
                 width="stretch",
                 key="weight_distribution_chart",
             )
     with st.container(border=True):
-        st.subheader("Convergence and margin error")
+        st.subheader(
+            "Convergence and margin error",
+            icon=":material/compare_arrows:",
+        )
         st.caption(
             "Residuals are final weighted shares minus target shares, in "
             "percentage points. Trimming can change the fitted margins."

@@ -5,6 +5,11 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
 
+TEAL = "#00727D"
+NAVY = "#0B2437"
+AMBER = "#E5A33B"
+SLATE = "#4895B7"
+
 
 def comparison_figure(comparison: pd.DataFrame):
     target_column = next(
@@ -47,12 +52,14 @@ def comparison_figure(comparison: pd.DataFrame):
         category_orders={"Series": list(series_columns.values())},
         labels={"Percent": "Share (%)"},
         title="Sample and benchmark distributions",
-        color_discrete_sequence=["#8093ad", "#1769aa", "#f0a202"],
+        color_discrete_sequence=["#8CA4B3", TEAL, AMBER],
     )
     figure.update_layout(
         height=max(380, 260 * comparison["Variable"].nunique()),
         legend_title_text="",
         margin={"l": 20, "r": 20, "t": 70, "b": 30},
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
     )
     figure.update_xaxes(title_text="")
     figure.update_yaxes(rangemode="tozero")
@@ -73,7 +80,7 @@ def weight_distribution_figure(weights: pd.Series):
         go.Histogram(
             x=weights,
             name="Weights",
-            marker_color="#1769aa",
+            marker_color=TEAL,
             opacity=0.85,
             hovertemplate="Weight: %{x:.4f}<br>Count: %{y}<extra></extra>",
         ),
@@ -84,7 +91,7 @@ def weight_distribution_figure(weights: pd.Series):
         go.Box(
             x=weights,
             name="Weights",
-            marker_color="#f0a202",
+            marker_color=AMBER,
             boxpoints="outliers",
             hovertemplate="Weight: %{x:.4f}<extra></extra>",
         ),
@@ -95,6 +102,8 @@ def weight_distribution_figure(weights: pd.Series):
         height=520,
         showlegend=False,
         margin={"l": 20, "r": 20, "t": 70, "b": 30},
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
     )
     figure.update_xaxes(title_text="Weight", row=2, col=1)
     figure.update_yaxes(title_text="Respondents", row=1, col=1)
@@ -117,14 +126,16 @@ def margin_error_figure(comparison: pd.DataFrame):
         facet_row="Variable" if comparison["Variable"].nunique() > 1 else None,
         labels={"Margin error (pp)": "Weighted minus target (pp)"},
         title="Residual differences from benchmark margins",
-        color_discrete_sequence=px.colors.qualitative.Safe,
+        color_discrete_sequence=[TEAL, NAVY, AMBER, SLATE, "#8A6FB1"],
     )
-    figure.add_hline(y=0, line_dash="dash", line_color="#596579")
+    figure.add_hline(y=0, line_dash="dash", line_color=NAVY)
     figure.update_layout(
         height=max(360, 240 * comparison["Variable"].nunique()),
         showlegend=comparison["Variable"].nunique() == 1,
         legend_title_text="",
         margin={"l": 20, "r": 20, "t": 70, "b": 30},
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
     )
     figure.update_xaxes(title_text="")
     return figure

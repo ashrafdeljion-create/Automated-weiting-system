@@ -13,6 +13,7 @@ weighted SPSS file and reports.
   residual-margin charts.
 - `utils.py` — Stats SA benchmark loading, SPSS metadata handling, and report
   utilities.
+- `.streamlit/config.toml` — navy-and-teal Streamlit theme.
 - `data/` — archived official Stats SA benchmark CSV and PDF.
 - `test_weighting.py` — unit tests for benchmark and weighting behavior.
 
@@ -31,6 +32,9 @@ Open the local URL printed by Streamlit, then drag a `.sav` file into the
 uploader. The app reads variable labels, value labels, and SPSS user-missing
 definitions. It preserves those supported metadata fields when writing the
 weighted `.sav` output and adds a labeled weight variable.
+
+The `.streamlit/config.toml` file provides the navy-and-teal dashboard theme.
+Restart Streamlit after changing theme settings.
 
 Run the tests with:
 
@@ -94,6 +98,10 @@ Custom target CSV formats:
 - **Post-stratification:** one column per selected survey variable plus
   `target_percent`; each joint cell must be unique and the percentages must sum
   to 100.
+
+These formats are not interchangeable. A marginal file cannot provide exact
+joint post-stratification cells, and the app does not invent a joint table by
+assuming the variables are independent.
 
 The app can download a template based on the included sample categories. Those
 sample-based values are starting points only, not verified benchmarks.
