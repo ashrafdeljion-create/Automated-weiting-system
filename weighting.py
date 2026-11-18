@@ -32,7 +32,7 @@ POPULATION_GROUPS = [
 DIMENSIONS = {
     "Age group": "age_group",
     "Sex": "sex",
-    "Population group": "population_group",
+    "Race / population group": "population_group",
 }
 
 _AGE_ROW = re.compile(

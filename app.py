@@ -455,6 +455,12 @@ source = st.sidebar.selectbox(
         "Enter target percentages",
         "Upload target CSV",
     ],
+    help=(
+        "The built-in Stats SA population estimates provide age and sex "
+        "targets, plus race/population-group targets for South Africa. "
+        "Household and personal income are not included; use entered or "
+        "uploaded verified targets for those variables."
+    ),
 )
 
 configured = False
@@ -610,6 +616,12 @@ else:
         ),
     )
     if variables:
+        st.caption(
+            "This mode works with any selected survey variables, including "
+            "household or personal income. Enter or upload verified targets "
+            "for the same categories and geography; sample proportions are "
+            "only starting values, not population benchmarks."
+        )
         weight_data, mapping = make_sample_columns(df, variables, "custom")
         weight_variables = [mapping[variable] for variable in variables]
         display_names = {
